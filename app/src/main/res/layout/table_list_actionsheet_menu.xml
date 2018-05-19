@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/actionsheet_menu_item_spacing">
+
+    <TextView
+        android:id="@+id/tableNameLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/actionsheet_menu_item_spacing"
+        android:gravity="center"
+        android:textColor="@color/actionsheet_menu_item_title_color"
+        android:textSize="@dimen/actionsheet_menu_item_title_size"
+        tools:text="MESA NºX" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/actionsheet_menu_item_divider_margin"
+        android:layout_marginLeft="@dimen/actionsheet_menu_item_divider_margin"
+        android:layout_marginEnd="@dimen/actionsheet_menu_item_divider_margin"
+        android:layout_marginRight="@dimen/actionsheet_menu_item_divider_margin"
+        android:layout_marginTop="@dimen/actionsheet_menu_item_spacing"
+        android:background="?android:attr/listDivider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionsheet_menu_item_customersCount_layout_height"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/minus_button"
+                android:layout_width="@dimen/actionsheet_menu_item_customersCount_buttons_size"
+                android:layout_height="@dimen/actionsheet_menu_item_customersCount_buttons_size"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/minusbutton"
+                android:contentDescription=""
+                style="?android:attr/borderlessButtonStyle"/>
+
+            <TextView
+                android:id="@+id/customersCountTextField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/actionsheet_menu_item_customersCount_textView_size"
+                tools:text="1" />
+
+            <ImageButton
+                android:id="@+id/add_button"
+                android:layout_width="@dimen/actionsheet_menu_item_customersCount_buttons_size"
+                android:layout_height="@dimen/actionsheet_menu_item_customersCount_buttons_size"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/addbutton"
+                android:contentDescription=""
+                style="?android:attr/borderlessButtonStyle"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/actionsheet_menu_item_divider_margin"
+        android:layout_marginLeft="@dimen/actionsheet_menu_item_divider_margin"
+        android:layout_marginEnd="@dimen/actionsheet_menu_item_divider_margin"
+        android:layout_marginRight="@dimen/actionsheet_menu_item_divider_margin"
+        android:background="?android:attr/listDivider" />
+
+    <Button
+        android:id="@+id/set_busy_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_gravity="center"
+        android:textAllCaps="false"
+        android:padding="@dimen/actionsheet_menu_item_padding"
+        android:textSize="@dimen/actionsheet_menu_item_textSize"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/table_list_actionsheet_menu_setbusy" />
+    <View
+        android:id="@+id/subdivider"
+        android:layout_width="@dimen/actionsheet_menu_item_subdivider_width"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:background="@color/actionsheet_menu_item_subdivider_color" />
+    <Button
+        android:id="@+id/set_reserved_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_gravity="center"
+        android:textAllCaps="false"
+        android:padding="@dimen/actionsheet_menu_item_padding"
+        android:textSize="@dimen/actionsheet_menu_item_textSize"
+        android:textColor="@color/actionsheet_menu_item_normalColor"
+        android:text="@string/table_list_actionsheet_menu_setreserved" />
+    <Button
+        android:id="@+id/set_available_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_gravity="center"
+        android:textAllCaps="false"
+        android:padding="@dimen/actionsheet_menu_item_padding"
+        android:textSize="@dimen/actionsheet_menu_item_textSize"
+        android:textColor="?attr/colorError"
+        android:text="@string/table_list_actionsheet_menu_setavailable"/>
+
+</LinearLayout>

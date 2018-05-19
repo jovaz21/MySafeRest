@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="@dimen/list_item_padding">
+
+    <TextView
+        android:id="@+id/list_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/list_item_textView_marginLeft"
+        android:layout_marginLeft="@dimen/list_item_textView_marginLeft"
+        tools:text="MESA NºX"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="@dimen/list_item_title_textSize"
+        android:textStyle="bold"/>
+
+    <!--android:textColor="@color/list_item_desc_textColor"-->
+    <TextView
+        android:id="@+id/list_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/list_title"
+        android:layout_marginTop="@dimen/list_item_titledesc_spacing"
+        android:layout_marginStart="@dimen/list_item_textView_marginLeft"
+        android:layout_marginLeft="@dimen/list_item_textView_marginLeft"
+        android:textColor="@color/colorAccent"
+        android:ellipsize="end"
+        android:singleLine="true"
+        tools:text="Reservado (2 x Clientes)"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="@dimen/list_item_desc_textSize" />
+
+</RelativeLayout>

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MySafeRest</string>
+    <string name="table_reserved_one_desc_format">** Reservada (%d x Cliente) **</string>
+    <string name="table_reserved_many_desc_format">** Reservada (%d x Clientes) **</string>
+    <string name="table_busy_one_desc_format">%d x Cliente (%.2f €)</string>
+    <string name="table_busy_many_desc_format">%d x Clientes (%.2f €)</string>
+    <string name="table_list_actionsheet_menu_setbusy">Abrir Mesa</string>
+    <string name="table_list_actionsheet_menu_setreserved">Reservar</string>
+    <string name="table_list_actionsheet_menu_setavailable">Cancelar Reserva</string>
 </resources>
