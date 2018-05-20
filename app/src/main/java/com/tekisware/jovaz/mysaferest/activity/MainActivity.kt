@@ -24,8 +24,9 @@ import com.tekisware.jovaz.mysaferest.fragment.TableListFragment
 import com.tekisware.jovaz.mysaferest.model.Table
 import com.tekisware.jovaz.mysaferest.model.TableStatus
 import kotlinx.android.synthetic.main.table_list_actionsheet_menu.*
+import java.util.*
 
-class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListener {
+class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListener, Observer {
 
     // Privates
     private var tableListFragment: TableListFragment? = null
@@ -59,8 +60,10 @@ class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListe
     override fun onItemClicked(view: View, index: Int, item: Table) {
 
         /* check */
-        if (item.status == TableStatus.BUSY)
+        if (item.status == TableStatus.BUSY) {
+            TableActivity.showTableView(this, item)
             return
+        }
 
         /* set */
         val sheetDialog = BottomSheetDialog(this)
@@ -124,6 +127,7 @@ class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListe
             val customersCount = customersCountTextField.text.toString().toInt()
             item.setBusyWith(customersCount)
             sheetDialog.dismiss()
+            TableActivity.showTableView(this, item)
         }
         setAvailableButton.setOnClickListener {
             item.setAvailable()
@@ -137,11 +141,16 @@ class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListe
         /* show */
         sheetDialog.setOnDismissListener(object: DialogInterface.OnDismissListener {
             override fun onDismiss(dialog: DialogInterface?) {
-                tableListFragment?.onListItemUpdated(index, item)
-                //Snackbar.make(view, item.name, Snackbar.LENGTH_LONG).show()
+                tableListFragment?.onListItemUpdated(item)
             }
 
         })
         sheetDialog.show()
+    }
+
+    // Table Observer
+    override fun update(o: Observable?, arg: Any?) {
+        //Snackbar.make(findViewById<View>(R.id.table_list_fragment), (arg as Table).orderList!!.getCustomersCount().toString(), Snackbar.LENGTH_INDEFINITE).show()
+        tableListFragment?.onListItemUpdated(arg as Table)
     }
 }

@@ -106,7 +106,7 @@ class TableListFragment : Fragment() {
         }
 
         // Update Item
-        fun notifyItemChanged(index: Int, item: Table) {
+        fun notifyItemChanged(item: Table) {
             context.run {
                 notifyDataSetChanged()
             }
@@ -134,7 +134,7 @@ class TableListFragment : Fragment() {
     }
 
     // On ListItem Updated
-    fun onListItemUpdated(index: Int, item: Table) {
-        (table_list_view.adapter as TableListItemAdapter).notifyItemChanged(index, item)
+    fun onListItemUpdated(item: Table) {
+        (table_list_view.adapter as TableListItemAdapter).notifyItemChanged(item)
     }
 }

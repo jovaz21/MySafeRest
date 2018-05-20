@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".fragment.TableViewFragment">
+
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/table_view_header_customersCount_layout_height"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="3"
+            android:gravity="start">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/table_view_header_textView_color"
+                    android:textSize="@dimen/table_view_header_textView_size"
+                    android:layout_marginStart="@dimen/table_view_header_textView_margin"
+                    android:layout_marginLeft="@dimen/table_view_header_textView_margin"
+                    tools:text="Clientes:"
+                    android:text="@string/table_view_header_customersLabel" />
+
+                <ImageButton
+                    android:id="@+id/minus_button"
+                    android:layout_width="@dimen/table_view_header_customersCount_buttons_size"
+                    android:layout_height="@dimen/table_view_header_customersCount_buttons_size"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/minusbutton"
+                    android:contentDescription="-"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+                <TextView
+                    android:id="@+id/customersCountTextField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/table_view_header_customersCount_textView_size"
+                    tools:text="1" />
+
+                <ImageButton
+                    android:id="@+id/add_button"
+                    android:layout_width="@dimen/table_view_header_customersCount_buttons_size"
+                    android:layout_height="@dimen/table_view_header_customersCount_buttons_size"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/addbutton"
+                    android:contentDescription="-"
+                    style="?android:attr/borderlessButtonStyle"/>
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="2"
+            android:gravity="end">
+            <TextView
+                android:id="@+id/totalAmountLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/table_view_header_textView_color"
+                android:textSize="@dimen/table_view_header_textView_size"
+                android:layout_marginEnd="@dimen/table_view_header_textView_margin"
+                android:layout_marginRight="@dimen/table_view_header_textView_margin"
+                android:gravity="center"
+                tools:text="Total: 148,59 €"
+                android:text="@string/table_view_header_totalAmount_format" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/table_view_header_divider_margin"
+        android:layout_marginLeft="@dimen/table_view_header_divider_margin"
+        android:layout_marginEnd="@dimen/table_view_header_divider_margin"
+        android:layout_marginRight="@dimen/table_view_header_divider_margin"
+        android:background="?android:attr/listDivider" />
+
+    <ListView
+        android:id="@+id/order_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/table_view_list_margin"
+        android:layout_marginStart="@dimen/table_view_list_margin"
+        android:layout_marginLeft="@dimen/table_view_list_margin"
+        android:layout_marginEnd="@dimen/table_view_list_margin"
+        android:layout_marginRight="@dimen/table_view_list_margin"/>
+
+</LinearLayout>

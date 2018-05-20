@@ -7,4 +7,7 @@
     <string name="table_list_actionsheet_menu_setbusy">Abrir Mesa</string>
     <string name="table_list_actionsheet_menu_setreserved">Reservar</string>
     <string name="table_list_actionsheet_menu_setavailable">Cancelar Reserva</string>
+
+    <string name="table_view_header_customersLabel">Clientes:</string>
+    <string name="table_view_header_totalAmount_format">Total: %.2f €</string>
 </resources>

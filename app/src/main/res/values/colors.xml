@@ -8,4 +8,5 @@
     <color name="actionsheet_menu_item_title_color">#555555</color>
     <color name="actionsheet_menu_item_normalColor">#868686</color>
     <color name="actionsheet_menu_item_subdivider_color">#f8f8f8</color>
+    <color name="table_view_header_textView_color">#555555</color>
 </resources>

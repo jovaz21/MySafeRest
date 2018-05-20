@@ -1,6 +1,7 @@
 package com.tekisware.jovaz.mysaferest.model
 
 import java.io.Serializable
+import java.util.*
 
 enum class TableStatus {
     AVAILABLE,
@@ -9,7 +10,7 @@ enum class TableStatus {
 }
 
 // Table
-data class Table(val id: Int, val roomName: String, val name: String): Serializable {
+data class Table(val id: Int, val roomName: String, val name: String): Observable(), Serializable {
     var orderList: OrderList? = null
 
     // Init
@@ -43,5 +44,18 @@ data class Table(val id: Int, val roomName: String, val name: String): Serializa
     fun setAvailable() {
         this.status = TableStatus.AVAILABLE
         this.orderList = null
+    }
+
+    // Set OrderList
+    fun setOrderList(value: OrderList, notifyObservers: Boolean) {
+
+        /* set */
+        this.orderList = value
+
+        /* check */
+        if (notifyObservers) {
+            setChanged()
+            notifyObservers(this)
+        }
     }
 }
