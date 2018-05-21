@@ -4,18 +4,20 @@ package com.tekisware.jovaz.mysaferest.fragment
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.BaseAdapter
 import android.widget.ImageButton
 import android.widget.TextView
 
 import com.tekisware.jovaz.mysaferest.R
-import com.tekisware.jovaz.mysaferest.activity.TableActivity
 import com.tekisware.jovaz.mysaferest.model.*
-import kotlinx.android.synthetic.main.fragment_table_list.*
+import kotlinx.android.synthetic.main.fragment_table_view.*
 
 /**
  * TableViewFragment is the main view screen from which user can handle all the Orders Stuff
@@ -26,6 +28,8 @@ class TableViewFragment : Fragment() {
     // Delegated Events Listener
     interface DelegatedEventsListener {
         fun onTableOrderListUpdated(tableId: Int, orderList: OrderList)
+        fun onItemClicked(view: View, index: Int, item: Order)
+        fun onAddOrderClicked()
     }
 
     // Statics
@@ -103,6 +107,64 @@ class TableViewFragment : Fragment() {
         val totalAmountLabel = view.findViewById(R.id.totalAmountLabel) as TextView
         val totalAmount = table.orderList!!.totalAmount
         totalAmountLabel.text = context?.getString(R.string.table_view_header_totalAmount_format, totalAmount)
+
+        /* set */
+        order_list_view.adapter = TableViewFragment.OrderListItemAdapter(activity!!, table.orderList!!)
+
+        /* set */
+        order_list_view.setOnItemClickListener { adapter: AdapterView<*>, thisView: View, index: Int, _: Long ->
+            delegatedEventsListener?.onItemClicked(thisView, index, adapter.getItemAtPosition(index) as Order)
+        }
+
+        /* Add Button */
+        val addOrderButton = view.findViewById(R.id.add_order_button) as FloatingActionButton
+        addOrderButton.setOnClickListener {
+            delegatedEventsListener?.onAddOrderClicked()
+        }
+    }
+    private class OrderListItemAdapter(context: Context, orderList: OrderList): BaseAdapter() {
+        private val context: Context
+        private val orderList: OrderList
+
+        // Setup
+        init {
+            this.context    = context
+            this.orderList  = orderList
+        }
+
+        // Adapter Stuff
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            val layoutInflater = LayoutInflater.from(context)
+
+            /* check */
+            val order = orderList.getAt(position)
+            val name = order?.meal?.name?.toUpperCase()
+            val count = order?.getCount()
+
+            /* set */
+            val listItem = layoutInflater.inflate(R.layout.order_list_item, parent, false)
+            listItem.findViewById<TextView>(R.id.item_name).text = name
+            listItem.findViewById<TextView>(R.id.orderLineCountTextField).text = count.toString()
+
+            /* done */
+            return(listItem)
+        }
+        override fun getItem(position: Int): Any {
+            return(orderList.getAt(position)!!)
+        }
+        override fun getItemId(position: Int): Long {
+            return(orderList.getAt(position)!!.meal?.id.toLong())
+        }
+        override fun getCount(): Int {
+            return(orderList.count)
+        }
+
+        // Update Item
+        fun notifyItemChanged(item: Order) {
+            context.run {
+                notifyDataSetChanged()
+            }
+        }
     }
 
     // Fragment Attached/Detached Callback
@@ -123,5 +185,10 @@ class TableViewFragment : Fragment() {
     }
     override fun onDetach() { super.onDetach()
         delegatedEventsListener = null
+    }
+
+    // On ListItem Updated
+    fun onListItemUpdated(item: Order) {
+        (order_list_view.adapter as TableViewFragment.OrderListItemAdapter).notifyItemChanged(item)
     }
 }

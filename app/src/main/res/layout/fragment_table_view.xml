@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -103,3 +108,17 @@
         android:layout_marginRight="@dimen/table_view_list_margin"/>
 
 </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_order_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="@dimen/table_view_floatingbutton_size"
+        android:layout_marginRight="@dimen/table_view_floatingbutton_size"
+        android:layout_marginEnd="@dimen/table_view_floatingbutton_size"
+        app:srcCompat="@drawable/ic_add"
+        app:backgroundTint="@color/colorAccent"
+        android:tint="@color/white"/>
+
+</FrameLayout>

@@ -150,7 +150,6 @@ class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListe
 
     // Table Observer
     override fun update(o: Observable?, arg: Any?) {
-        //Snackbar.make(findViewById<View>(R.id.table_list_fragment), (arg as Table).orderList!!.getCustomersCount().toString(), Snackbar.LENGTH_INDEFINITE).show()
         tableListFragment?.onListItemUpdated(arg as Table)
     }
 }

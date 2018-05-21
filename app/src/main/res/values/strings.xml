@@ -10,4 +10,7 @@
 
     <string name="table_view_header_customersLabel">Clientes:</string>
     <string name="table_view_header_totalAmount_format">Total: %.2f €</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

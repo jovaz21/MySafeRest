@@ -4,11 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.tekisware.jovaz.mysaferest.R
+import com.tekisware.jovaz.mysaferest.fragment.OrderEditorFragment
 import com.tekisware.jovaz.mysaferest.fragment.TableViewFragment
+import com.tekisware.jovaz.mysaferest.model.Order
 import com.tekisware.jovaz.mysaferest.model.OrderList
 import com.tekisware.jovaz.mysaferest.model.Table
 import java.util.*
@@ -90,15 +96,40 @@ class TableActivity : AppCompatActivity(), TableViewFragment.DelegatedEventsList
         supportFragmentManager.beginTransaction()
                 .add(R.id.table_activity_fragment, fragment)
                 .commit()
+
+        /* BackStack Changed */
+        supportFragmentManager.addOnBackStackChangedListener {
+            Snackbar.make(findViewById(android.R.id.content), "BACK STACK!!!", Snackbar.LENGTH_LONG).show()
+        }
     }
 
     // Options Item Seletcted
     override fun onOptionsItemSelected(item: MenuItem?) = when (item?.itemId) {
         android.R.id.home -> {
-            finish()
+            if (supportFragmentManager.getBackStackEntryCount() == 0){
+                finish()
+            }
+            else {
+                supportFragmentManager.popBackStack()
+            }
+            //finish()
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    // Add Order Button Clicked
+    override fun onAddOrderClicked() {
+        val orderEditorFragment = OrderEditorFragment.newInstance(this.table.orderList!!)
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.table_activity_fragment, orderEditorFragment)
+                .addToBackStack(null)
+                .commit()
+    }
+
+    // OrderList Item Clicked
+    override fun onItemClicked(view: View, index: Int, item: Order) {
+        Snackbar.make(view, item.meal.name, Snackbar.LENGTH_LONG).show()
     }
 
     // Table OrderList Updated
