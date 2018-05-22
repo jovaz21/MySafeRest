@@ -18,8 +18,8 @@
     <dimen name="table_view_header_divider_margin">16dp</dimen>
     <dimen name="table_view_header_customersCount_layout_height">60dp</dimen>
     <dimen name="table_view_header_customersCount_buttons_size">55dp</dimen>
-    <dimen name="table_view_header_customersCount_textView_size">22sp</dimen>
-    <dimen name="table_view_header_textView_size">20sp</dimen>
+    <dimen name="table_view_header_customersCount_textView_size">18dp</dimen>
+    <dimen name="table_view_header_textView_size">18dp</dimen>
     <dimen name="table_view_header_textView_margin">6dp</dimen>
     <dimen name="table_view_list_margin">8dp</dimen>
     <dimen name="table_view_list_name_textSize">18sp</dimen>

@@ -4,46 +4,53 @@ package com.tekisware.jovaz.mysaferest.fragment
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 import com.tekisware.jovaz.mysaferest.R
-import com.tekisware.jovaz.mysaferest.model.Meal
-import com.tekisware.jovaz.mysaferest.model.Order
-import com.tekisware.jovaz.mysaferest.model.OrderList
-import com.tekisware.jovaz.mysaferest.model.Table
+import com.tekisware.jovaz.mysaferest.model.*
+import kotlinx.android.synthetic.main.fragment_order_editor.*
+import android.support.v4.view.ViewCompat.animate
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.opengl.ETC1.getWidth
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
+import com.tekisware.jovaz.mysaferest.activity.TableActivity
 
 /**
  * OrderEditorFragment allows user to select the meals customers
  * order.
  */
-class OrderEditorFragment : Fragment() {
+class OrderEditorFragment: Fragment(), MealListFragment.DelegatedEventsListener {
 
     // Delegated Events Listener
     interface DelegatedEventsListener {
         fun onTableOrderListUpdated(tableId: Int, orderList: OrderList)
-        fun onItemClicked(view: View, index: Int, item: Meal)
     }
 
     // Statics
     companion object {
-        val ARG_ORDERLIST = "ARG_ORDERLIST"
+        val ARG_TABLE = "ARG_TABLE"
 
         @JvmStatic
-        fun newInstance(orderList: OrderList): OrderEditorFragment {
+        fun newInstance(table: Table): OrderEditorFragment {
             val fragment = OrderEditorFragment().apply {
                 arguments = Bundle()
-                arguments?.putSerializable(ARG_ORDERLIST, orderList)
+                arguments?.putSerializable(ARG_TABLE, table)
             }
             return(fragment)
         }
     }
 
     // Privates
-    private val orderList by lazy<OrderList> {
-        arguments?.getSerializable(ARG_ORDERLIST) as OrderList
+    private val table by lazy<Table> {
+        arguments?.getSerializable(ARG_TABLE) as Table
     }
 
     private var delegatedEventsListener: OrderEditorFragment.DelegatedEventsListener? = null
@@ -56,7 +63,42 @@ class OrderEditorFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val orderEditorView = inflater.inflate(R.layout.fragment_order_editor, container, false)
+
+        // Setting ViewPager for each Tabs
+        val viewPager = orderEditorView.findViewById(R.id.viewpager) as ViewPager
+        val tabLayout = activity?.findViewById(R.id.tab_layout) as TabLayout
+        tabLayout.setupWithViewPager(viewPager)
+
+        /* setup */
+        viewPager.adapter = object: FragmentPagerAdapter(activity?.supportFragmentManager) {
+            override fun getItem(position: Int): Fragment {
+                return(MealListFragment.newInstance(DataManager.mealCategoryList[position]))
+            }
+            override fun getCount(): Int = DataManager.mealCategoryList.size
+            override fun getPageTitle(position: Int): CharSequence {
+                return(DataManager.mealCategoryList[position])
+            }
+        }
+
+        /* Show Tabs */
+        tabLayout.visibility = View.VISIBLE
+
+        /* done */
         return(orderEditorView)
+    }
+    override fun onDestroyView() { super.onDestroyView()
+
+        /* release */
+        val fragmentManagerTx = activity!!.supportFragmentManager.beginTransaction()
+        activity?.supportFragmentManager?.fragments?.forEach {
+            if (it is MealListFragment)
+                fragmentManagerTx.remove(it)
+        }
+        fragmentManagerTx.commit()
+
+        /* Hide Tabs */
+        val tabLayout = activity?.findViewById(R.id.tab_layout) as TabLayout
+        tabLayout.visibility = View.GONE
     }
 
     // Fragment Attached/Detached Callback
@@ -77,5 +119,10 @@ class OrderEditorFragment : Fragment() {
     }
     override fun onDetach() { super.onDetach()
         delegatedEventsListener = null
+    }
+
+    // OrderList Updated
+    override fun onOrderListUpdated(orderList: OrderList) {
+        delegatedEventsListener?.onTableOrderListUpdated(table.id, orderList)
     }
 }

@@ -20,6 +20,9 @@ object DataManager {
     }
     fun getTable(index: Int) = if ((index >= 0) && (index < tableList.size)) tableList[index] else null
 
+    // Meal Categories
+    val mealCategoryList by lazy { listOf("BURGUERS", "POSTRES", "BEBIDAS") }
+
     /** Meals */
     val mealList by lazy {
         listOf<Meal>(

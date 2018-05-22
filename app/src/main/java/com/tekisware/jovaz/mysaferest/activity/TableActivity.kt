@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
+import android.support.v4.app.FragmentManager
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
@@ -19,9 +20,7 @@ import com.tekisware.jovaz.mysaferest.model.OrderList
 import com.tekisware.jovaz.mysaferest.model.Table
 import java.util.*
 
-class TableActivity : AppCompatActivity(), TableViewFragment.DelegatedEventsListener {
-
-    // Privates
+class TableActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedListener, TableViewFragment.DelegatedEventsListener, OrderEditorFragment.DelegatedEventsListener {
 
     // Statics
     companion object {
@@ -97,10 +96,8 @@ class TableActivity : AppCompatActivity(), TableViewFragment.DelegatedEventsList
                 .add(R.id.table_activity_fragment, fragment)
                 .commit()
 
-        /* BackStack Changed */
-        supportFragmentManager.addOnBackStackChangedListener {
-            Snackbar.make(findViewById(android.R.id.content), "BACK STACK!!!", Snackbar.LENGTH_LONG).show()
-        }
+        /* set */
+        supportFragmentManager.addOnBackStackChangedListener(this)
     }
 
     // Options Item Seletcted
@@ -120,7 +117,7 @@ class TableActivity : AppCompatActivity(), TableViewFragment.DelegatedEventsList
 
     // Add Order Button Clicked
     override fun onAddOrderClicked() {
-        val orderEditorFragment = OrderEditorFragment.newInstance(this.table.orderList!!)
+        val orderEditorFragment = OrderEditorFragment.newInstance(this.table)
         supportFragmentManager.beginTransaction()
                 .replace(R.id.table_activity_fragment, orderEditorFragment)
                 .addToBackStack(null)
@@ -135,5 +132,16 @@ class TableActivity : AppCompatActivity(), TableViewFragment.DelegatedEventsList
     // Table OrderList Updated
     override fun onTableOrderListUpdated(tableId: Int, orderList: OrderList) {
         _curTable?.setOrderList(orderList, true)
+    }
+
+    // Table Activity BackStack Changed
+    override fun onBackStackChanged() {
+
+        /* check */
+        var fragment = supportFragmentManager.findFragmentById(R.id.table_activity_fragment) as? TableViewFragment
+        if (fragment != null) {
+            val orderList = _curTable?.orderList
+            return
+        }
     }
 }
