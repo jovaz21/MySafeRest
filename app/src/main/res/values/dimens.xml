@@ -18,10 +18,33 @@
     <dimen name="table_view_header_divider_margin">16dp</dimen>
     <dimen name="table_view_header_customersCount_layout_height">60dp</dimen>
     <dimen name="table_view_header_customersCount_buttons_size">55dp</dimen>
-    <dimen name="table_view_header_customersCount_textView_size">18dp</dimen>
+    <dimen name="table_view_header_customersCount_textView_size">18sp</dimen>
     <dimen name="table_view_header_textView_size">18dp</dimen>
     <dimen name="table_view_header_textView_margin">6dp</dimen>
     <dimen name="table_view_list_margin">8dp</dimen>
-    <dimen name="table_view_list_name_textSize">18sp</dimen>
+    <dimen name="table_view_list_name_textSize">16sp</dimen>
+    <dimen name="table_view_list_mealname_textSize">14sp</dimen>
+    <dimen name="table_view_list_count_layout_height">60dp</dimen>
+    <dimen name="table_view_list_count_buttons_size">50dp</dimen>
+    <dimen name="table_view_list_count_textView_size">16sp</dimen>
     <dimen name="table_view_floatingbutton_size">16dp</dimen>
+    <dimen name="table_view_maillist_item_photo_size">60dp</dimen>
+    <dimen name="table_view_maillist_item_height">80dp</dimen>
+    <dimen name="table_view_maillist_item_margin">4dp</dimen>
+    <dimen name="table_view_orderlist_padding">8dp</dimen>
+    <dimen name="table_view_orderlist_item_height">40dp</dimen>
+    <dimen name="table_view_orderlist_item_layout_height">46dp</dimen>
+
+    <dimen name="order_line_editor_count_layout_height">75dp</dimen>
+    <dimen name="order_line_editor_count_buttons_size">70dp</dimen>
+    <dimen name="order_line_editor_count_textView_size">24sp</dimen>
+    <dimen name="order_line_editor_photo_size">120dp</dimen>
+    <dimen name="order_line_editor_margin">8dp</dimen>
+    <dimen name="order_line_editor_marginTop">16dp</dimen>
+    <dimen name="order_line_editor_name_size">19sp</dimen>
+    <dimen name="order_line_editor_margin_tiny">2dp</dimen>
+    <dimen name="order_line_editor_price_size">24sp</dimen>
+    <dimen name="order_line_editor_desc_size">18sp</dimen>
+    <dimen name="order_line_editor_allergen_icon_size">33dp</dimen>
+    <dimen name="order_line_editor_notes_size">18sp</dimen>
 </resources>

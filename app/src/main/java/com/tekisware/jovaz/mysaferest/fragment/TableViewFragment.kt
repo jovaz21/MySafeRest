@@ -3,6 +3,7 @@ package com.tekisware.jovaz.mysaferest.fragment
 
 import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -21,15 +22,23 @@ import com.tekisware.jovaz.mysaferest.model.*
 import kotlinx.android.synthetic.main.fragment_table_view.*
 
 /**
+ * TableView.OnOrderListChangedListener
+ */
+class TableView {
+    interface OnOrderListChangedListener {
+        fun onOrderListChanged(tableId: Int, orderList: OrderList)
+    }
+}
+
+/**
  * TableViewFragment is the main view screen from which user can handle all the Orders Stuff
  * of a Table.
  */
 class TableViewFragment : Fragment() {
 
     // Delegated Events Listener
-    interface DelegatedEventsListener {
-        fun onTableOrderListUpdated(tableId: Int, orderList: OrderList)
-        fun onItemClicked(view: View, index: Int, item: Order)
+    interface DelegatedEventsListener: TableView.OnOrderListChangedListener {
+        fun onOrderClicked(view: View, index: Int, order: Order)
         fun onAddOrderClicked()
     }
 
@@ -86,7 +95,7 @@ class TableViewFragment : Fragment() {
             /* set */
             if (table.status != TableStatus.AVAILABLE) {
                 table.orderList!!.setCustomersCount(customersCount)
-                delegatedEventsListener?.onTableOrderListUpdated(table.id, table.orderList!!)
+                delegatedEventsListener?.onOrderListChanged(table.id, table.orderList!!)
             }
         }
         val addButton = view.findViewById(R.id.add_button) as ImageButton
@@ -100,21 +109,19 @@ class TableViewFragment : Fragment() {
             /* set */
             if (table.status != TableStatus.AVAILABLE) {
                 table.orderList!!.setCustomersCount(customersCount)
-                delegatedEventsListener?.onTableOrderListUpdated(table.id, table.orderList!!)
+                delegatedEventsListener?.onOrderListChanged(table.id, table.orderList!!)
             }
         }
 
         /* Total Amount */
-        val totalAmountLabel = view.findViewById(R.id.totalAmountLabel) as TextView
-        val totalAmount = table.orderList!!.totalAmount
-        totalAmountLabel.text = context?.getString(R.string.table_view_header_totalAmount_format, totalAmount)
+        this.updateTotalAmount()
 
         /* set */
-        order_list_view.adapter = TableViewFragment.OrderListItemAdapter(activity!!, table.orderList!!)
+        order_list_view.adapter = TableViewFragment.OrderListItemAdapter(activity!!, this, table.orderList!!)
 
         /* set */
         order_list_view.setOnItemClickListener { adapter: AdapterView<*>, thisView: View, index: Int, _: Long ->
-            delegatedEventsListener?.onItemClicked(thisView, index, adapter.getItemAtPosition(index) as Order)
+            delegatedEventsListener?.onOrderClicked(thisView, index, adapter.getItemAtPosition(index) as Order)
         }
 
         /* Add Button */
@@ -123,13 +130,20 @@ class TableViewFragment : Fragment() {
             delegatedEventsListener?.onAddOrderClicked()
         }
     }
-    private class OrderListItemAdapter(context: Context, orderList: OrderList): BaseAdapter() {
+    private fun updateTotalAmount() {
+        val totalAmountLabel = view?.findViewById(R.id.totalAmountLabel) as TextView
+        val totalAmount = table.orderList!!.totalAmount
+        totalAmountLabel.text = context?.getString(R.string.table_view_header_totalAmount_format, totalAmount)
+    }
+    private class OrderListItemAdapter(context: Context, fragment: TableViewFragment, orderList: OrderList): BaseAdapter() {
         private val context: Context
+        private val fragment: TableViewFragment
         private val orderList: OrderList
 
         // Setup
         init {
             this.context    = context
+            this.fragment   = fragment
             this.orderList  = orderList
         }
 
@@ -138,14 +152,74 @@ class TableViewFragment : Fragment() {
             val layoutInflater = LayoutInflater.from(context)
 
             /* check */
-            val order = orderList.getAt(position)
-            val name = order?.meal?.name?.toUpperCase()
-            val count = order?.getCount()
+            val order = orderList.getAt(position)!!
+            val name = order.meal.name.toUpperCase()
+            val count = order.getCount()
 
             /* set */
             val listItem = layoutInflater.inflate(R.layout.order_list_item, parent, false)
             listItem.findViewById<TextView>(R.id.item_name).text = name
-            listItem.findViewById<TextView>(R.id.orderLineCountTextField).text = count.toString()
+
+            /* Customers Count */
+            val countTextField = listItem.findViewById(R.id.item_count) as TextView
+            countTextField.text = count.toString()
+
+            /* set */
+            val minusButton = listItem.findViewById(R.id.item_minus_button) as ImageButton
+            minusButton.setOnClickListener {
+                var curCount = countTextField.text.toString().toInt()
+
+                /* check */
+                if (curCount <= 0)
+                    return@setOnClickListener
+
+                /* set */
+                curCount--
+                countTextField.text = curCount.toString()
+                if (Build.VERSION.SDK_INT >= 23) {
+                    countTextField.setTextColor(
+                            when(curCount) {
+                                0       -> context.getColor(R.color.app_grey_300)
+                                else    -> context.getColor(R.color.colorAccent)
+                            }
+                    )
+                }
+
+                /* check */
+                if (curCount <= 0) {
+
+                    /* remove */
+                    orderList.removeAt(orderList.indexOf(order))
+                    fragment.onListItemUpdated(order)
+
+                    /* done */
+                    return@setOnClickListener
+                }
+
+                /* set */
+                order.setCount(curCount)
+                fragment.onListItemUpdated(order)
+            }
+            val addButton = listItem.findViewById(R.id.item_add_button) as ImageButton
+            addButton.setOnClickListener {
+                var curCount = countTextField.text.toString().toInt()
+
+                /* set */
+                curCount++
+                countTextField.text = curCount.toString()
+                if (Build.VERSION.SDK_INT >= 23) {
+                    countTextField.setTextColor(
+                            when(curCount) {
+                                0       -> context.getColor(R.color.app_grey_300)
+                                else    -> context.getColor(R.color.colorAccent)
+                            }
+                    )
+                }
+
+                /* set */
+                order.setCount(curCount)
+                fragment.onListItemUpdated(order)
+            }
 
             /* done */
             return(listItem)
@@ -154,7 +228,7 @@ class TableViewFragment : Fragment() {
             return(orderList.getAt(position)!!)
         }
         override fun getItemId(position: Int): Long {
-            return(orderList.getAt(position)!!.meal?.id.toLong())
+            return(orderList.getAt(position)!!.meal.id.toLong())
         }
         override fun getCount(): Int {
             return(orderList.count)
@@ -188,8 +262,15 @@ class TableViewFragment : Fragment() {
         delegatedEventsListener = null
     }
 
+    // Notify OrderList Changed
+    fun notifyOrderListChanged() {
+        updateTotalAmount()
+        delegatedEventsListener?.onOrderListChanged(table.id, table.orderList!!)
+    }
+
     // On ListItem Updated
     fun onListItemUpdated(item: Order) {
         (order_list_view.adapter as TableViewFragment.OrderListItemAdapter).notifyItemChanged(item)
+        notifyOrderListChanged()
     }
 }

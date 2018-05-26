@@ -45,14 +45,14 @@
                 android:layout_height="@dimen/actionsheet_menu_item_customersCount_buttons_size"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/minusbutton"
-                android:contentDescription=""
+                android:contentDescription="@string/app_default_image_desc"
                 style="?android:attr/borderlessButtonStyle"/>
 
             <TextView
                 android:id="@+id/customersCountTextField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/colorAccent"
                 android:textSize="@dimen/actionsheet_menu_item_customersCount_textView_size"
                 tools:text="1" />
 
@@ -62,7 +62,7 @@
                 android:layout_height="@dimen/actionsheet_menu_item_customersCount_buttons_size"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/addbutton"
-                android:contentDescription=""
+                android:contentDescription="@string/app_default_image_desc"
                 style="?android:attr/borderlessButtonStyle"/>
 
         </LinearLayout>

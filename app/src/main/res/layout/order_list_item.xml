@@ -2,25 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/row_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/table_view_orderlist_item_layout_height"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:descendantFocusability="blocksDescendants"
     android:background="?android:attr/selectableItemBackground"
-    android:padding="@dimen/list_item_padding">
+    android:padding="@dimen/table_view_orderlist_padding">
 
     <TextView
         android:id="@+id/item_name"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/table_view_orderlist_item_height"
         tools:text="THE ITALIAN (2 CARNES)"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:gravity="center"
+        android:gravity="start|center_vertical"
+        android:singleLine="true"
         android:textSize="@dimen/table_view_list_name_textSize"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_toLeftOf="@id/item_count_control"
+        android:layout_toStartOf="@id/item_count_control"/>
 
     <LinearLayout
+        android:id="@+id/item_count_control"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/table_view_orderlist_item_height"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:orientation="horizontal"
@@ -28,28 +33,28 @@
 
         <ImageButton
             android:id="@+id/item_minus_button"
-            android:layout_width="@dimen/table_view_header_customersCount_buttons_size"
-            android:layout_height="@dimen/table_view_header_customersCount_buttons_size"
+            android:layout_width="@dimen/table_view_list_count_buttons_size"
+            android:layout_height="@dimen/table_view_list_count_buttons_size"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/minusbutton"
-            android:contentDescription="-"
+            android:contentDescription="@string/app_default_image_desc"
             style="?android:attr/borderlessButtonStyle"/>
 
         <TextView
-            android:id="@+id/orderLineCountTextField"
+            android:id="@+id/item_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorAccent"
             android:textSize="@dimen/table_view_header_customersCount_textView_size"
             tools:text="1" />
 
         <ImageButton
             android:id="@+id/item_add_button"
-            android:layout_width="@dimen/table_view_header_customersCount_buttons_size"
-            android:layout_height="@dimen/table_view_header_customersCount_buttons_size"
+            android:layout_width="@dimen/table_view_list_count_buttons_size"
+            android:layout_height="@dimen/table_view_list_count_buttons_size"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/addbutton"
-            android:contentDescription="-"
+            android:contentDescription="@string/app_default_image_desc"
             style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>

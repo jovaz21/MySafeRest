@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">MySafeRest</string>
+
+    <string name="price_format">%.2f €</string>
+
     <string name="table_reserved_one_desc_format">** Reservada (%d x Cliente) **</string>
     <string name="table_reserved_many_desc_format">** Reservada (%d x Clientes) **</string>
     <string name="table_busy_one_desc_format">%d x Cliente (%.2f €)</string>
@@ -13,4 +16,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="order_line_editor_photo_desc">Foto del plato seleccionado</string>
+    <string name="order_line_editor_notes_hint"> Anotaciones del cliente…</string>
+    <string name="mneu_order_line_editor_ok_button">OK</string>
+    <string name="meal_list_item_photo_desc">Foto</string>
+    <string name="app_default_image_desc">-</string>
 </resources>

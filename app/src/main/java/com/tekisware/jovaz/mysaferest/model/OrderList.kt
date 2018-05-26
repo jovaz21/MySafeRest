@@ -33,6 +33,9 @@ data class OrderList(private var customersCount: Int): Serializable {
     /** Add Order */
     fun add(order: Order) { this.list.add(order) }
 
+    /** Index of */
+    fun indexOf(order: Order): Int { return(this.list.indexOf(order)) }
+
     /** Remove Order At Index */
     fun removeAt(index: Int) { this.list.removeAt(index) }
 

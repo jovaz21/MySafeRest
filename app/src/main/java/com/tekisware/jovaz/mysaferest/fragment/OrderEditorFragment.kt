@@ -27,12 +27,10 @@ import com.tekisware.jovaz.mysaferest.activity.TableActivity
  * OrderEditorFragment allows user to select the meals customers
  * order.
  */
-class OrderEditorFragment: Fragment(), MealListFragment.DelegatedEventsListener {
+class OrderEditorFragment: Fragment() {
 
     // Delegated Events Listener
-    interface DelegatedEventsListener {
-        fun onTableOrderListUpdated(tableId: Int, orderList: OrderList)
-    }
+    interface DelegatedEventsListener: TableView.OnOrderListChangedListener { }
 
     // Statics
     companion object {
@@ -72,7 +70,7 @@ class OrderEditorFragment: Fragment(), MealListFragment.DelegatedEventsListener 
         /* setup */
         viewPager.adapter = object: FragmentPagerAdapter(activity?.supportFragmentManager) {
             override fun getItem(position: Int): Fragment {
-                return(MealListFragment.newInstance(DataManager.mealCategoryList[position]))
+                return(MealListFragment.newInstance(table, DataManager.mealCategoryList[position]))
             }
             override fun getCount(): Int = DataManager.mealCategoryList.size
             override fun getPageTitle(position: Int): CharSequence {
@@ -119,10 +117,5 @@ class OrderEditorFragment: Fragment(), MealListFragment.DelegatedEventsListener 
     }
     override fun onDetach() { super.onDetach()
         delegatedEventsListener = null
-    }
-
-    // OrderList Updated
-    override fun onOrderListUpdated(orderList: OrderList) {
-        delegatedEventsListener?.onTableOrderListUpdated(table.id, orderList)
     }
 }
