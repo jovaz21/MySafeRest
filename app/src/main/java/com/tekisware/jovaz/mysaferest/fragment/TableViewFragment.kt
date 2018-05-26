@@ -2,6 +2,7 @@ package com.tekisware.jovaz.mysaferest.fragment
 
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -9,9 +10,7 @@ import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.ImageButton
@@ -40,6 +39,7 @@ class TableViewFragment : Fragment() {
     interface DelegatedEventsListener: TableView.OnOrderListChangedListener {
         fun onOrderClicked(view: View, index: Int, order: Order)
         fun onAddOrderClicked()
+        fun onCloseTable(tableId: Int)
     }
 
     // Statics
@@ -71,6 +71,11 @@ class TableViewFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val tableView = inflater.inflate(R.layout.fragment_table_view, container, false)
+
+        /* set */
+        setHasOptionsMenu(true)
+
+        /* done */
         return(tableView)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState)
@@ -260,6 +265,34 @@ class TableViewFragment : Fragment() {
     }
     override fun onDetach() { super.onDetach()
         delegatedEventsListener = null
+    }
+
+    // Fragment Options Menu Stuff
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) { super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.menu_order_editor, menu)
+    }
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.closeTable_menu_item -> {
+
+                /* confirm */
+                val builder = AlertDialog.Builder(activity)
+                builder.setTitle(context?.getString(R.string.table_view_closeTable_confirm_title))
+                builder.setMessage(context?.getString(R.string.table_view_closeTable_confirm_message))
+                builder.setPositiveButton(context?.getString(R.string.table_view_closeTable_confirm_yes)) { dialog, which ->
+                    delegatedEventsListener?.onCloseTable(table.id)
+                    activity?.finish()
+                }
+                builder.setNegativeButton(context?.getString(R.string.table_view_closeTable_confirm_no)) { dialog, which ->
+                }
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+
+                /* done */
+                return(true)
+            }
+        }
+        return(super.onOptionsItemSelected(item))
     }
 
     // Notify OrderList Changed

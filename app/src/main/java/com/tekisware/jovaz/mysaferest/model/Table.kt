@@ -41,9 +41,18 @@ data class Table(val id: Int, val roomName: String, val name: String): Observabl
     }
 
     // Set Available
-    fun setAvailable() {
+    fun setAvailable() { this.setAvailable(false) }
+    fun setAvailable(notifyObservers: Boolean) {
+
+        /* set */
         this.status = TableStatus.AVAILABLE
         this.orderList = null
+
+        /* check */
+        if (notifyObservers) {
+            setChanged()
+            notifyObservers(this)
+        }
     }
 
     // Set OrderList

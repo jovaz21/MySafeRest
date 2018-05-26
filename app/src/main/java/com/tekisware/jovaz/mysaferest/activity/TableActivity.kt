@@ -149,6 +149,11 @@ class TableActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedLis
         _curTable?.setOrderList(orderList, true)
     }
 
+    // Table Closed
+    override fun onCloseTable(tableId: Int) {
+        _curTable?.setAvailable(true)
+    }
+
     // Table Activity BackStack Changed
     override fun onBackStackChanged() {
 

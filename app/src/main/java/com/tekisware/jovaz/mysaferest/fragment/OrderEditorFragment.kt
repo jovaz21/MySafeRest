@@ -8,9 +8,6 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 
 import com.tekisware.jovaz.mysaferest.R
 import com.tekisware.jovaz.mysaferest.model.*
@@ -19,8 +16,11 @@ import android.support.v4.view.ViewCompat.animate
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.opengl.ETC1.getWidth
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import android.widget.EditText
+import android.widget.TextView
 import com.tekisware.jovaz.mysaferest.activity.TableActivity
 
 /**
