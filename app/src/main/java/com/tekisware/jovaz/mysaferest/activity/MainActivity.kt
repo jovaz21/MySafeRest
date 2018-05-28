@@ -14,21 +14,24 @@ import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewPager
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.widget.Toolbar
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import com.tekisware.jovaz.mysaferest.R
-import com.tekisware.jovaz.mysaferest.fragment.TableListFragment
-import com.tekisware.jovaz.mysaferest.model.Table
-import com.tekisware.jovaz.mysaferest.model.TableStatus
+import com.tekisware.jovaz.mysaferest.controller.TableController
+import com.tekisware.jovaz.mysaferest.fragment.*
+import com.tekisware.jovaz.mysaferest.model.*
 import kotlinx.android.synthetic.main.table_list_actionsheet_menu.*
 import java.util.*
 
-class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListener, Observer {
+class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListener, Observer, TableView.OnOrderListChangedListener, TableViewFragment.DelegatedEventsListener, OrderEditorFragment.DelegatedEventsListener, MealListFragment.DelegatedEventsListener {
 
     // Privates
+    private var tableController: TableController? = null
     private var tableListFragment: TableListFragment? = null
 
     // Activity Created Callback
@@ -41,19 +44,40 @@ class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListe
         setSupportActionBar(toolbar)
 
         /* check */
-        if (findViewById<ViewGroup>(R.id.table_list_fragment) == null)
-            return
+        if (findViewById<ViewGroup>(R.id.table_list_fragment) != null) {
 
-        /* check */
-        tableListFragment = supportFragmentManager.findFragmentById(R.id.table_list_fragment) as? TableListFragment
-        if (tableListFragment != null)
-            return
+            /* check */
+            tableListFragment = supportFragmentManager.findFragmentById(R.id.table_list_fragment) as? TableListFragment
+            if (tableListFragment == null) {
+                tableListFragment = TableListFragment.newInstance()
+                supportFragmentManager.beginTransaction()
+                        .add(R.id.table_list_fragment, tableListFragment)
+                        .commit()
+            }
+
+            /* set */
+            tableListFragment?.setHasOptionsMenu(false)
+        }
+
+        /* show */
+        if (findViewById<ViewGroup>(R.id.table_activity_fragment) != null) {
+            val table = DataManager.getTable(0)!!
+
+            /* show */
+            TableActivity.showTableView(this, table)
+
+            /* start */
+            tableController = TableController.start(this, table)
+        }
 
         /* set */
-        tableListFragment = TableListFragment.newInstance()
-        supportFragmentManager.beginTransaction()
-                .add(R.id.table_list_fragment, tableListFragment)
-                .commit()
+        supportActionBar?.setDisplayHomeAsUpEnabled(findViewById<ViewGroup>(R.id.table_activity_fragment) != null)
+    }
+
+    // Options Item Seletcted
+    override fun onOptionsItemSelected(item: MenuItem?) = when (tableController!!.onOptionsItemSelected(item)) {
+        true -> true
+        else -> super.onOptionsItemSelected(item)
     }
 
     // TableList Fragment EventsListener
@@ -64,6 +88,8 @@ class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListe
             TableActivity.showTableView(this, item)
             return
         }
+        if (findViewById<ViewGroup>(R.id.table_activity_fragment) != null)
+            TableActivity.showTableView(this, item)
 
         /* set */
         val sheetDialog = BottomSheetDialog(this)
@@ -146,6 +172,33 @@ class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListe
 
         })
         sheetDialog.show()
+    }
+
+    // Add Order Button Clicked
+    override fun onAddOrderClicked() {
+        tableController?.onAddOrderClicked()
+    }
+
+    // Order Selected from TableViewFragment
+    override fun onOrderClicked(view: View, index: Int, order: Order) {
+        tableController?.onOrderClicked(view, index, order)
+    }
+
+    // Meal+Order Selected from MealListFragment
+    override fun onMealOrderClicked(view: View, index: Int, meal: Meal, order: Order?) {
+        tableController?.onMealOrderClicked(view, index, meal, order)
+    }
+
+    // Table OrderList Changed
+    override fun onOrderListChanged(tableId: Int, orderList: OrderList) {
+        tableController?.onOrderListChanged(tableId, orderList)
+    }
+
+    // Table Closed
+    override fun onCloseTable(tableId: Int) {
+        tableController?.onCloseTable(tableId)
+        if (findViewById<ViewGroup>(R.id.table_activity_fragment) != null)
+            TableActivity.showTableView(this, DataManager.findTableById(tableId)!!)
     }
 
     // Table Observer

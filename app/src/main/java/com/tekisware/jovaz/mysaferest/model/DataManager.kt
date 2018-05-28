@@ -20,6 +20,17 @@ object DataManager {
     }
     fun getTable(index: Int) = if ((index >= 0) && (index < tableList.size)) tableList[index] else null
 
+    /** Find Table By Id */
+    fun findTableById(tableId: Int): Table? {
+        var res: Table? = null
+
+        /* scan */
+        this.tableList.forEach { if (it.id == tableId) res = it }
+
+        /* done */
+        return(res)
+    }
+
     // Meal Categories
     val mealCategoryList by lazy { listOf("BURGUERS", "POSTRES", "BEBIDAS") }
 

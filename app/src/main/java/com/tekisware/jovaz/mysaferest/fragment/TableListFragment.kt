@@ -51,6 +51,8 @@ class TableListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val tableListView = inflater.inflate(R.layout.fragment_table_list, container, false)
+
+        /* done */
         return(tableListView)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { super.onViewCreated(view, savedInstanceState)
