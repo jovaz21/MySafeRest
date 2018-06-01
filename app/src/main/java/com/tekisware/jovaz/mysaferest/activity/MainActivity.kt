@@ -1,5 +1,6 @@
 package com.tekisware.jovaz.mysaferest.activity
 
+import android.content.Context
 import android.content.DialogInterface
 import android.opengl.Visibility
 import android.support.v7.app.AppCompatActivity
@@ -30,9 +31,17 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListener, Observer, TableView.OnOrderListChangedListener, TableViewFragment.DelegatedEventsListener, OrderEditorFragment.DelegatedEventsListener, MealListFragment.DelegatedEventsListener {
 
+    companion object {
+        val USER_LASTTABLE_INDEX = "LASTTABLE_INDEX"
+    }
+
     // Privates
     private var tableController: TableController? = null
     private var tableListFragment: TableListFragment? = null
+
+    private val lasSelectedTableIndex by lazy<Int> {
+        PreferenceManager.getDefaultSharedPreferences(this).getInt(MainActivity.USER_LASTTABLE_INDEX, 0)
+    }
 
     // Activity Created Callback
     override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState)
@@ -61,7 +70,7 @@ class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListe
 
         /* show */
         if (findViewById<ViewGroup>(R.id.table_activity_fragment) != null) {
-            val table = DataManager.getTable(0)!!
+            val table = DataManager.getTable(lasSelectedTableIndex)!!
 
             /* show */
             TableActivity.showTableView(this, table)
@@ -85,6 +94,12 @@ class MainActivity : AppCompatActivity(), TableListFragment.DelegatedEventsListe
 
         /* check */
         if (item.status == TableStatus.BUSY) {
+            PreferenceManager.getDefaultSharedPreferences(this)
+                                .edit()
+                                .putInt(MainActivity.USER_LASTTABLE_INDEX, index)
+                                .apply()
+
+            /* show */
             TableActivity.showTableView(this, item)
             return
         }

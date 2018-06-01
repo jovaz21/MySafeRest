@@ -93,11 +93,17 @@ class TableActivity : AppCompatActivity(), TableView.OnOrderListChangedListener,
         /* check */
         if (findViewById<ViewGroup>(R.id.table_activity_fragment) == null)
             return
+        if (findViewById<ViewGroup>(R.id.table_activity_fragment).visibility == View.INVISIBLE) {
+            finish()
+            return
+        }
 
         /* check */
         var fragment = supportFragmentManager.findFragmentById(R.id.table_activity_fragment) as? TableViewFragment
-        if (fragment != null)
+        if (fragment != null) {
+            fragment.bindTable(table, false)
             return
+        }
 
         /* setup */
         fragment = TableViewFragment.newInstance(this.table, false)
